@@ -1,5 +1,5 @@
 <div class="columns-2 md:columns-4 gap-4 pt-5">
   @for(gif of gifService.trendingGifs(); track gif.id) {
-  <gif-list-item [imageUrl]="gif.url" [alt]="gif.title" />
+  <gif-list-item [gif]="gif" />
   }
 </div>
