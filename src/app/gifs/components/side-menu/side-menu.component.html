@@ -1,10 +1,13 @@
 <div
   id="menu"
-  class="w-[220px] bg-gray-900 min-h-screen z-10 text-slate-300 fixed left-0 h-screen overflow-y-scroll"
+  class="w-[220px] bg-gray-900 min-h-screen z-40 text-slate-300 fixed left-0 h-screen overflow-y-scroll
+         transition-transform duration-300 ease-in-out
+         -translate-x-full md:translate-x-0"
+  [class.translate-x-0]="isOpen()"
 >
   <!-- gifs-side-menu-header -->
   <gifs-side-menu-header />
 
   <!-- gifs-side-menu-options -->
-  <gifs-side-menu-options />
+  <gifs-side-menu-options (closeMenu)="closeMenu.emit()" />
 </div>

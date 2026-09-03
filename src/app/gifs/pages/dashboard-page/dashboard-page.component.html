@@ -1,13 +1,37 @@
-<div
-  class="bg-slate-100 overflow-y-scroll w-screen h-screen antialiased text-slate-300 selection:bg-blue-600 selection:text-white"
->
-  <div class="flex flex-col relative w-screen">
-    <gifs-side-menu />
+<div class="bg-slate-100 h-screen antialiased text-slate-800 selection:bg-blue-600 selection:text-white">
+  <!-- Mobile hamburger button -->
+  <button
+    (click)="toggleSidebar()"
+    class="md:hidden fixed top-4 p-2 rounded-lg shadow-lg transition-all duration-300 z-[60]
+           bg-gray-900 text-white hover:bg-gray-700"
+    [class.left-4]="!isSidebarOpen()"
+    [class.left-[224px]]="isSidebarOpen()"
+    aria-label="Toggle menu"
+  >
+    @if (!isSidebarOpen()) {
+    <i class="fa-solid fa-bars text-lg"></i>
+    } @else {
+    <i class="fa-solid fa-xmark text-lg"></i>
+    }
+  </button>
 
-    <div
-      class="ml-[220px] px-4 flex flex-col flex-1 h-full text-slate-800"
-    >
-      <router-outlet />
-    </div>
+  <!-- Backdrop -->
+  <div
+    (click)="closeSidebar()"
+    class="md:hidden fixed inset-0 bg-black/50 z-30 transition-opacity duration-300"
+    [class.opacity-0]="!isSidebarOpen()"
+    [class.pointer-events-none]="!isSidebarOpen()"
+  ></div>
+
+  <!-- Sidebar -->
+  <gifs-side-menu [isOpen]="isSidebarOpen()" (closeMenu)="closeSidebar()" />
+
+  <!-- Content (global scroll container) -->
+  <div
+    #scrollContainer
+    (scroll)="onScroll()"
+    class="md:ml-[220px] px-4 pt-20 md:pt-4 flex flex-col h-full overflow-y-auto"
+  >
+    <router-outlet />
   </div>
 </div>
