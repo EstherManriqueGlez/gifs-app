@@ -17,6 +17,4 @@ export default class SearchPageComponent {
     this.gifService.searchGifs(query).subscribe((response) => {
       this.gifs.set(response);
     });
-  }
-
-}
+  }}
