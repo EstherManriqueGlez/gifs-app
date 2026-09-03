@@ -16,6 +16,16 @@
     />
   </head>
   <body>
+    <script>
+      (function () {
+        var stored = localStorage.getItem('theme');
+        var dark =
+          stored === 'dark' ||
+          (stored === null &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) document.documentElement.classList.add('dark');
+      })();
+    </script>
     <app-root></app-root>
   </body>
 </html>

@@ -1,5 +1,9 @@
+@if (gifService.trendingGifsLoading() && gifService.trendingGifs().length === 0) {
+<gif-list-skeleton />
+} @else {
 <div class="columns-2 md:columns-4 gap-4 pt-5">
   @for(gif of gifService.trendingGifs(); track gif.id) {
   <gif-list-item [gif]="gif" />
   }
 </div>
+}

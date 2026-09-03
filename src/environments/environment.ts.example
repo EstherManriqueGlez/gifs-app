@@ -4,6 +4,10 @@ export const environment = {
   companyName2: 'App',
   CompanySlogan: 'The best GIFs in the world',
 
+  // Profile
+  profileName: 'YOUR_NAME',
+  profileInitials: 'YN',
+
   // ApiKeys
   giphyApiKey: 'YOUR_GIPHY_API_KEY_HERE',
   giphyUrl: 'https://api.giphy.com/v1',

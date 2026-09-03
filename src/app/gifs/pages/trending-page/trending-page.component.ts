@@ -2,10 +2,11 @@ import { Component, effect, inject } from '@angular/core';
 import { GifsService } from '../../services/gifs.service';
 import { ScrollStateService } from 'src/app/shared/services/scroll-state.service';
 import { GifListItemComponent } from '../../components/gif-list/gif-list-item/gif-list-item.component';
+import { GifListSkeletonComponent } from '../../components/gif-list-skeleton/gif-list-skeleton.component';
 
 @Component({
   selector: 'app-trending-page',
-  imports: [GifListItemComponent],
+  imports: [GifListItemComponent, GifListSkeletonComponent],
   templateUrl: './trending-page.component.html',
 })
 export default class TrendingPageComponent {
