@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { GifsService } from 'src/app/gifs/services/gifs.service';
 interface MenuOption {
@@ -18,6 +18,8 @@ export class SideMenuOptionsComponent {
 
   gifService = inject(GifsService);
 
+  closeMenu = output<void>();
+
   menuOptions: MenuOption[] = [
     {
       icon: 'fa-solid fa-chart-line',
@@ -32,5 +34,9 @@ export class SideMenuOptionsComponent {
       route: '/dashboard/search',
     },
   ];
+
+  onLinkClick() {
+    this.closeMenu.emit();
+  }
 
 }
