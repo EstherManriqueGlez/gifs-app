@@ -7,6 +7,7 @@
     "paths": {
       "@environments/*": ["src/environments/*"],
     },
+    "types": ["jasmine"],
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

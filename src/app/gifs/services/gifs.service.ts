@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
 import { environment } from '@environments/environment';
 import type { GiphyResponse } from '../interfaces/giphy.interfaces';
@@ -10,10 +10,12 @@ import { GifMapper } from '../mapper/gif.mapper';
 const GIF_KEYS = 'searchHistory';
 
 const loadHistoryFromLocalStorage = () => {
-  const gifsFromLocalStorage = localStorage.getItem(GIF_KEYS) ?? '{}'; //Record<string, gifs[]>
-  const gifs = JSON.parse(gifsFromLocalStorage);
-
-  return gifs;
+  try {
+    const gifsFromLocalStorage = localStorage.getItem(GIF_KEYS) ?? '{}'; //Record<string, gifs[]>
+    return JSON.parse(gifsFromLocalStorage);
+  } catch {
+    return {};
+  }
 };
 
 // Ejemplo del objeto que se armará para la busqueda.
@@ -62,11 +64,16 @@ export class GifsService {
           offset: (this.trendingPage() * 20).toString(),
         },
       })
-      .subscribe((response) => {
-        const gifs = GifMapper.mapGiphyItemsToGifArray(response.data);
-        this.trendingGifs.update((currentGifs) => [...currentGifs, ...gifs]);
-        this.trendingPage.update((currentPage) => currentPage + 1);
-        this.trendingGifsLoading.set(false);
+      .subscribe({
+        next: (response) => {
+          const gifs = GifMapper.mapGiphyItemsToGifArray(response.data);
+          this.trendingGifs.update((currentGifs) => [...currentGifs, ...gifs]);
+          this.trendingPage.update((currentPage) => currentPage + 1);
+          this.trendingGifsLoading.set(false);
+        },
+        error: () => {
+          this.trendingGifsLoading.set(false);
+        },
       });
   }
 
@@ -89,7 +96,8 @@ export class GifsService {
             ...history,
             [query.toLowerCase()]: items,
           }));
-        })
+        }),
+        catchError(() => of<Gif[]>([]))
       );
 
     // .subscribe((response) => {
