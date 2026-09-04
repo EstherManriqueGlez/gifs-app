@@ -43,3 +43,4 @@ Thumbs.db
 
 # Environment files (local secrets - NEVER commit)
 src/environments/environment.local.ts
+src/environments/environment.production.ts

@@ -1,59 +1,115 @@
 # GifsApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+Discover and search trending GIFs, powered by the [Giphy API](https://developers.giphy.com/). Built with **Angular 19**, **Angular Signals** and **Tailwind CSS 4**.
 
-## Development server
+![Angular](https://img.shields.io/badge/Angular-19-DD0031) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-06B6D4) ![License](https://img.shields.io/badge/license-MIT-blue)
 
-To start a local development server, run:
+## Features
+
+- **Trending GIFs** with infinite scroll and 20-item pagination.
+- **GIF search** with a search history persisted in `localStorage`.
+- **Search history** accessible from the sidebar, including a dedicated page per query.
+- **Light/Dark theme** toggle that persists your choice and respects the OS preference.
+- **Skeleton loaders** while images are loading.
+- **HTTP error interceptor** that surfaces friendly toast notifications on API failures.
+- **Fully responsive** layout with a collapsible sidebar on mobile.
+
+## Tech Stack
+
+| Technology     | Purpose                                |
+| -------------- | -------------------------------------- |
+| Angular 19     | Framework (standalone components)      |
+| Angular Signals| Reactive state management              |
+| RxJS           | Async HTTP streams and operators       |
+| Tailwind CSS 4 | Styling (utility-first)                |
+| Giphy REST API | GIF data source                        |
+| Font Awesome   | Icons (loaded via CDN)                 |
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) >= 20
+- npm (bundled with Node)
+
+## Configuration: Giphy API Key
+
+This app reads the Giphy API key from an environment file. **The real key is never committed** to the repository.
+
+1. Create a free API key at [Giphy Developers](https://developers.giphy.com/).
+2. Copy `src/environments/environment.local.ts` values into your local setup by adding your real key there:
+
+   ```ts
+   // src/environments/environment.local.ts (gitignored)
+   export const environment = {
+     production: false,
+     giphyApiKey: 'YOUR_REAL_GIPHY_KEY',
+     giphyUrl: 'https://api.giphy.com/v1',
+   };
+   ```
+
+3. The `development` build configuration automatically swaps `environment.ts` for `environment.local.ts` via `fileReplacements` (see `angular.json`).
+
+## Installation & Run
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Then open `http://localhost:4200/`. The app hot-reloads whenever you edit source files.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Build
 
 ```bash
-ng generate component component-name
+npm run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The compiled artifacts are stored in `dist/gifs-app/browser/`. By default the production build is optimized for performance. A `prebuild` step injects the `GIPHY_API_KEY` environment variable (if present) into the production environment file.
+
+## Tests
 
 ```bash
-ng generate --help
+npm test
 ```
 
-## Building
+Unit tests run with [Karma](https://karma-runner.github.io) and [Jasmine](https://jasmine.github.io/).
 
-To build the project run:
+## Project Structure
 
-```bash
-ng build
+```
+src/
+├─ app/
+│  ├─ gifs/                     # GIF feature module
+│  │  ├─ components/            # UI components (gif-list, side-menu, skeletons, ...)
+│  │  ├─ interfaces/            # Giphy API + domain models
+│  │  ├─ mapper/                # Maps Giphy items → domain Gif model
+│  │  ├─ pages/                 # dashboard, trending, search, gif-history
+│  │  └─ services/              # GifsService (trending, search, history)
+│  └─ shared/                   # Cross-cutting concerns
+│     ├─ interceptors/          # HTTP error toast interceptor
+│     └─ services/              # ThemeService, ScrollStateService
+├─ environments/                # Per-environment configuration
+└─ index.html
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Routes
 
-## Running unit tests
+| Path                        | Description                          |
+| --------------------------- | ------------------------------------ |
+| `/dashboard`                | Dashboard shell (redirects)          |
+| `/dashboard/trending`       | Trending GIFs with infinite scroll   |
+| `/dashboard/search`         | Search GIFs                          |
+| `/dashboard/history/:query` | History page for a given query       |
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Deployment (Netlify)
 
-```bash
-ng test
-```
+See the detailed step-by-step guide below.
 
-## Running end-to-end tests
+1. Connect your repository in [Netlify](https://app.netlify.com).
+2. Build command: `npm run build` (auto-detected from `netlify.toml`).
+3. Publish directory: `dist/gifs-app/browser/` (auto-detected from `netlify.toml`).
+4. Add the environment variable `GIPHY_API_KEY` with your real key in **Site settings → Environment variables**.
+5. Deploy and verify the trending page loads correctly.
 
-For end-to-end (e2e) testing, run:
+## License
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT
