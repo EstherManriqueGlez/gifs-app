@@ -110,6 +110,6 @@ See the detailed step-by-step guide below.
 4. Add the environment variable `GIPHY_API_KEY` with your real key in **Site settings → Environment variables**.
 5. Deploy and verify the trending page loads correctly.
 
-## License
+## Notes
 
-MIT
+It was created for learning purposes following the [Udemy](https://www.udemy.com).
